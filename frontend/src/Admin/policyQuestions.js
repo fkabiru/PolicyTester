@@ -33,14 +33,16 @@ const PolicyQuestions = () => {
         answerList.push(ans)
     }
     useEffect(() => {
+        if(policies.length<1){
         GetAllPolicies().then((pol) => {
-
-            pol.HRPolicies.map((hpol) => {
-                polArr.push(hpol.policy);
-            })
-
-            setPolicies(polArr);
-        });
+           
+                pol.HRPolicies.map((hpol) => {
+                    polArr.push(hpol.policy);
+                })
+                setPolicies(polArr);
+            });
+            }
+        
     });
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
@@ -68,12 +70,13 @@ const PolicyQuestions = () => {
     const handleCorrectAnswer = (event) => {
         setCorrectAnswer(event.target.value)
         //Also add the correct answer in the list of incorrect answers
-        incorrectAnswerArr.push(event.target.value);
+        
     }
     const handleInCorrectAnswer = (event) => {
         setIncorrestAnswer(event.target.value);
     }
     const updateIncorrectAnswerArray=()=>{
+        
         if(incorrectAnswer !=null){
             incorrectAnswerArr.push(incorrectAnswer);
         }
@@ -98,6 +101,11 @@ const PolicyQuestions = () => {
             wrongAns.push({"incorrectAnswer":inc})
             
         })
+
+        // Add correct answer into the list of incorrect answer
+        //  so that it can also be rendered in the answers options.
+        wrongAns.push({"incorrectAnswer":correctAnswer});
+        
         let policyQsn = {
             policy: selectedPolicy[0],
             policyQuestions: question,
@@ -117,7 +125,7 @@ const PolicyQuestions = () => {
     return (
 
         <Grid container>
-            <Grid item xs={8} >
+            <Grid item xs={6} >
                 {/* <Paper sx={{
                     width: 500,
                     height: 300,
@@ -188,7 +196,7 @@ const PolicyQuestions = () => {
             </Grid>
             <Grid sx={4}>
             <div style={{textAlign:'left'}}>
-                        <h6>Incorrect answers</h6>
+                        <h6> Answers</h6>
                         <br></br>
                         <p>{incorrectAnswerArr.map((inc)=>{
                             return <li>{inc}</li>

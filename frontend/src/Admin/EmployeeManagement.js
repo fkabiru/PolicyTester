@@ -1,4 +1,4 @@
-import Reatc, { useState } from "react"
+import Reatc, { useEffect, useState } from "react"
 import {
     Grid,
     Paper,
@@ -7,18 +7,18 @@ import {
 import { DataGrid } from '@mui/x-data-grid';
 import { textAlign } from "@mui/system";
 import CreateUser from "../Authentication/createUser";
+import GetAllUsers from "../Commons/usersAPI";
 
 const EmployeeMan = () => {
     const [empEmail, setEmpmail] = useState();
     const [isSubmitting, setubmitting] = useState(false);
+    const [rows,setRows] = useState([]);
     const columns = [
-        { field: 'id', headerName: 'ID', width: 50 },
-        { field: 'num', headerName: 'Number', width: 50 },
-        { field: 'email', headerName: 'Email', width: 200 }];
+        // { field: 'id', headerName: 'ID', width: 50 },
+        { field: 'id', headerName: 'Number', width: 100 },
+        { field: 'username', headerName: 'Email', width: 300 }];
 
-        const rows = [
-            {id:1, num: 1, email: 'Snow@kns.co.ke'}];    
-
+        
     const handleEmailChange = (event) => {
         setEmpmail(event.target.value)
     }
@@ -35,6 +35,11 @@ const EmployeeMan = () => {
             }
           });
     }
+    useEffect(()=>{
+        GetAllUsers().then((usrs)=>{
+            setRows(usrs);
+        })
+    })
     const myStyle = {
         // color: "white",
        // backgroundColor: "DodgerBlue",
